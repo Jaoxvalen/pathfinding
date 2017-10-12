@@ -14,11 +14,13 @@
       <File Name="CEdge.h"/>
       <File Name="CGraph.h"/>
       <File Name="CNode.h"/>
+      <File Name="Place.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Utils">
       <File Name="Utils.h"/>
       <File Name="Constants.h"/>
       <File Name="Drawer.h"/>
+      <File Name="InputFile.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
