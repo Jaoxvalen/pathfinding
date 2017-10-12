@@ -22,6 +22,7 @@ static int initialize_randomness(int seed)
     
     static void getWord(ifstream& fichero, string& line)
     {
+        //jaox
         line = "";
         char c = ' ';
         bool scaning = false;
