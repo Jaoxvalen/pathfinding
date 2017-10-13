@@ -12,13 +12,14 @@ Context mContext;
 
 void onLoad()
 {
-    CGraph
-    InputFile::readInput("",)
+    Utils::initialize_randomness(-1);
+    mContext.loadGraph("/home/jaox/Documentos/gtest.txt");
+    
 }
 
 void onEnterFrame()
 {
-    mContext.draw();
+    mContext.drawGraph();
 }
 
 void init()

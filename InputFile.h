@@ -3,14 +3,15 @@
 #include "Utils.h"
 #include <string>
 #include <fstream>
+#include <iostream>
 
 using namespace DS;
+using namespace std;
 
 class InputFile{
     public:
-    void readInput(string path,CGraph<Place,double> graph){
-        ifstream in;
-        in.open(path);
+    void readInput(string path,CGraph<Place,double>* graph){
+        ifstream in(path.c_str());
         string s,line;
         double n;
         bool flag = false;
@@ -22,10 +23,12 @@ class InputFile{
             
             for(int i=0;i< nNodes;i++){
                 double x,y;
-                x = Utils::getWord(in,line);
-                y = Utils::getWord(in,line);
+                Utils::getWord(in,line);
+                x = stod(line.c_str());
+                Utils::getWord(in,line);
+                y = stod(line.c_str());
                 Place oPlace(x,y,i);
-                graph.insertNode(oPlace);
+                graph->insertNode(oPlace);
                 
             }
             
@@ -36,10 +39,12 @@ class InputFile{
             int nEdges = stoi(line.c_str());            
             for(int i=0;i< nEdges;i++){
                 int to,from;
-                to = Utils::getWord(in,line);
-                from = Utils::getWord(in,line);
-                graph.insertEdge(graph.nodes[from],graph.nodes[to],false);
+                Utils::getWord(in,line);
+                to = stoi(line.c_str());
+                Utils::getWord(in,line);
+                from = stoi(line.c_str());
+                graph->insertEdge(graph->nodes[from],graph->nodes[to],0.0,false);
             }        
         }
     }
-}
+};

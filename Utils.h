@@ -7,7 +7,18 @@ using namespace std;
 class Utils
 {
 public:
-static int initialize_randomness(int seed)
+    static int randint(int lower, int upper)
+    { // returns a random integer between lower and upper
+        return lower + rand() % (upper - lower + 1);
+    }
+
+    static double randdouble(double a, double b)
+    { // retorna un random double entre a y b
+        return a + (b - a) * rand() / ((double)RAND_MAX);
+    }
+
+
+    static int initialize_randomness(int seed)
     { // initializes the seed, if seed is -1 then it uses system time as seed
         int seed1;
         time_t* tp;
@@ -19,10 +30,10 @@ static int initialize_randomness(int seed)
         srand(seed1);
         return seed1;
     }
-    
+
     static void getWord(ifstream& fichero, string& line)
     {
-        //jaox
+        // jaox
         line = "";
         char c = ' ';
         bool scaning = false;
