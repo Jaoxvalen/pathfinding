@@ -13,7 +13,7 @@ Context mContext;
 void onLoad()
 {
     Utils::initialize_randomness(-1);
-    mContext.loadGraph("/home/jaox/Documentos/gtest.txt");
+    mContext.loadGraph("../gtest.txt");
     
 }
 
