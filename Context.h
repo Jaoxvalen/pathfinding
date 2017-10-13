@@ -14,7 +14,4 @@ public:
     {
         mDrawer.line(100,100,200,200,new Color(255,0,0,255));
     }
-    void loadGraph(){
-        DS
-    }
 };

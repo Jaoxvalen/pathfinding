@@ -12,7 +12,6 @@ Context mContext;
 
 void onLoad()
 {
-    CGraph
     InputFile::readInput("",)
 }
 
