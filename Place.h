@@ -12,4 +12,4 @@ class Place{
         y = _y;
         id = _id;
     }    
-}
+};

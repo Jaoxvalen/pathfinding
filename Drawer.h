@@ -46,6 +46,7 @@ public:
         glVertex2d(x1,y1);
         glVertex2d(x2,y2);
         glEnd();
+        delete color;
     }
     void line(Point p1, Point p2, Color* color)
     {
@@ -55,6 +56,7 @@ public:
         glVertex2d(p1.x,p1.y);
         glVertex2d(p2.x,p2.y);
         glEnd();
+        delete color;
     }
     
 
@@ -77,6 +79,7 @@ public:
         glVertex2f(x1,y1);
         
         glEnd();
+        delete color;
     }
     
     void rect(Point p1, Point p2, Point p3, Point p4, Color* color)
@@ -96,8 +99,8 @@ public:
         
         glVertex2f(p4.x,p4.y);
         glVertex2f(p1.x,p1.y);
-        
         glEnd();
+        delete color;
     }
     void circ(int x, int y, int radius, Color* color)
     {
@@ -110,6 +113,7 @@ public:
             glVertex2f(x + (radius * cos(i * twicePi / lineAmount)), y + (radius * sin(i * twicePi / lineAmount)));
         }
         glEnd();
+        delete color;
     }
     
     void circ(Point point, int radius, Color* color)
@@ -123,6 +127,7 @@ public:
             glVertex2f(point.x + (radius * cos(i * twicePi / lineAmount)), point.y + (radius * sin(i * twicePi / lineAmount)));
         }
         glEnd();
+        delete color;
     }
     
     
@@ -140,6 +145,7 @@ public:
                        y + (radius * sin(i * twicePi / triangleAmount)));
         }
         glEnd();
+        delete color;
     }
 };
 }
