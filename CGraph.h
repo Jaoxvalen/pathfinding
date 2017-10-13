@@ -13,7 +13,6 @@ namespace DS
 	template<class N, class E>
 	class CGraph
 	{
-
 		public :
 
 		typedef CGraph<N,E> self;

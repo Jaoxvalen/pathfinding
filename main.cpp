@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Utils.h"
 #include "Context.h"
+#include "InputFile.h"
 
 using namespace std;
 
@@ -11,7 +12,8 @@ Context mContext;
 
 void onLoad()
 {
-    //hola jaox
+    CGraph
+    InputFile::readInput("",)
 }
 
 void onEnterFrame()
