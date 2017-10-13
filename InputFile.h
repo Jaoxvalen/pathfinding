@@ -8,7 +8,7 @@ using namespace DS;
 
 class InputFile{
     public:
-    void readInput(string path,CGraph<Place,float> graph){
+    void readInput(string path,CGraph<Place,double> graph){
         ifstream in;
         in.open(path);
         string s,line;
