@@ -15,6 +15,7 @@ namespace DS
 		E data;
 		Node* nodes[2];
 		bool bidir;
+        bool isSaved=false;
 
 		CEdge( E edge_data, bool edge_bidir )
 		{

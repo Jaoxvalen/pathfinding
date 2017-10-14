@@ -3,6 +3,7 @@ class Place{
     public:
     double x,y;
     int id,idSection;
+    int idCluster;
     Place(){
     } 
     Place(double _x,double _y){

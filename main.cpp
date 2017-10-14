@@ -13,7 +13,9 @@ Context mContext;
 void onLoad()
 {
     Utils::initialize_randomness(-1);
-    mContext.loadGraph("../gtest.txt");
+    //mContext.loadGraph("../gtest1.txt");
+    mContext.generatedGraph("../gtest.txt",100000);
+    mContext.SegmentGraph(10);
     
 }
 
@@ -24,7 +26,6 @@ void onEnterFrame()
 
 void init()
 {
-    Utils::initialize_randomness(-1);
     glClearColor(0.0,0.0,0.0,0.0);
     onLoad();
 }
@@ -62,6 +63,7 @@ int main(int argc, char** argv)
     // RGBA mode and a double buffered window
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
     glutInitWindowSize(WIDTH,HEIGHT);
+    //glEnable(GL_BLEND);
     glutCreateWindow("Test");
     // Registration of the display callback function 
     glutDisplayFunc(displayCallback);

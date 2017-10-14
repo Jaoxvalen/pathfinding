@@ -5,6 +5,7 @@
 #include <list>
 #include "CNode.h"
 #include "CEdge.h"
+#include <utility>
 
 using namespace std;
 
@@ -28,7 +29,10 @@ namespace DS
 		void insertEdge( Node* from, Node* to, E edge_data, bool dir );
 		void removeEdge( Edge* edge );
 		void removeNode( Node* node );
-
+        
+        //info extra 
+        int nEdges=0;
+        vector<pair <int,int> > edgesLog;
 
 		void print();
 	};
@@ -62,6 +66,8 @@ namespace DS
 			to->edges.push_back( _edge_to );
 			from->edges_back.push_back( _edge_to );
 		}
+        edgesLog.push_back(make_pair (from->data.id,to->data.id));
+        nEdges++;
 
 	}
 

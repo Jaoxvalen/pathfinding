@@ -2,6 +2,8 @@
 #include <math.h>
 #include <vector>
 
+using namespace std;
+
 namespace visual
 {
     
@@ -31,13 +33,15 @@ public:
 class Drawer
 {
 public:
-    Color* RED = new Color(255, 0, 0, 255);
-    Color* GREEN = new Color(0, 255, 0, 255);
-    Color* BLUE = new Color(0, 0, 255, 255);
+    //Color* RED = new Color(1.0, 0.0, 0.0, 1.0);
+    //Color* GREEN = new Color(0.0, 1.0, 0.0, 1.0);
+    //Color* BLUE = new Color(0.0, 0.0, 1.0, 1.0);
+    
+    
     Drawer()
     {
+        
     }
-
     void line(int x1, int y1, int x2, int y2, Color* color)
     {
         glColor4f(color->R, color->G, color->B, color->A);

@@ -15,7 +15,7 @@ namespace DS
 		typedef typename G::NodeData N;
 		typedef typename G::Edge Edge;
 		
-        long long id;
+        int id;
         bool isSelected=false;
 		N data;
 		vector<Edge*> edges;
