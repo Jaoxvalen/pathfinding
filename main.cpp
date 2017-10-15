@@ -14,7 +14,7 @@ void onLoad()
 {
     Utils::initialize_randomness(-1);
     //mContext.loadGraph("../gtest1.txt");
-    mContext.generatedGraph("../gtest.txt",100000);
+    mContext.generatedGraph("../gtest.txt",100);
     mContext.SegmentGraph(10);
     
 }

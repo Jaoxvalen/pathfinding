@@ -90,11 +90,11 @@ public:
                 double y1=oEdges[p]->nodes[0]->data.y;
                 double x2=oEdges[p]->nodes[1]->data.x;
                 double y2=oEdges[p]->nodes[1]->data.y;
-                //mDrawer.line(x1, y1, x2, y2, new Color(1.0, 1.0, 1.0, 1.0));
+                mDrawer.line(x1, y1, x2, y2, new Color(1.0, 1.0, 1.0, 1.0));
             }
             
             
-            int nIdCluster=mGraph->nodes[q]->data.idCluster;
+            /*int nIdCluster=mGraph->nodes[q]->data.idCluster;
             vector<Color*> tColor={
                 {new Color(1.0, 0.0, 0.0, 1.0)},
                 {new Color(0.0, 1.0, 0.0, 1.0)},
@@ -106,9 +106,9 @@ public:
                 {new Color(1.0, 0.43, 0.78, 1.0)},
                 {new Color(0.89, 0.47, 0.20, 1.0)},
                 {new Color(0.52, 0.39, 0.39, 1.0)}
-            };
+            };*/
             
-            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,tColor[nIdCluster]);
+            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,new Color(1.0,0.0,0.0,1.0));
             
             
         }

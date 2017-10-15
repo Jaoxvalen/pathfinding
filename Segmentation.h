@@ -26,7 +26,7 @@ public:
     {
          return sqrt(pow((oNode1->data.x - oNode2->data.x), 2) + pow((oNode1->data.y - oNode2->data.y), 2));
     }
-    void kmeans(CGraph<Place,double>* oGraph, int k, double nDelta)
+    vector<vector<Node* > > kmeans(CGraph<Place,double>* oGraph, int k, double nDelta)
     {
         //seleccionar k nodos aleatorios
         vector<Node*> oClusters;
@@ -88,6 +88,6 @@ public:
                 oClusters[c]=oClusterNew;
             }
         }
-        
+        return lsClusterAsig;
     }
 };
