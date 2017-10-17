@@ -4,6 +4,8 @@
 #include "Place.h"
 #include "InputFile.h"
 #include "Segmentation.h"
+#include "SolverPath.h"
+#include "PreSolver.h"
 
 #include <CGAL/Triangulation_vertex_base_with_info_2.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
@@ -17,6 +19,7 @@ class Context
 {
     Drawer mDrawer;
     CGraph<Place, double>* mGraph;
+    vector<CGraph<Place, double>::Node*> oPath;
     int kSegments;
 
 public:
@@ -34,6 +37,11 @@ public:
         mGraph=new CGraph<Place, double>();
     }
         
+    void PreSolverGraph()
+    {
+        PreSolver oPreSolver;
+        oPreSolver.calculatePathSegments(mGraph,10,"../solve1.txt");
+    }
     void loadGraph(string path)
     {
         InputFile ifManager;
@@ -41,8 +49,6 @@ public:
     }
     void generatedGraph(string path, int numberOfNodes)
     {
-        
-        Utils::initialize_randomness(-1);
         int x, y;
         vector<pair<PointCGAL, CGraph<Place, double>::Node*> > pointsToTriangule;
         for(int i = 0; i < numberOfNodes; i++) {
@@ -50,10 +56,7 @@ public:
             data.x = Utils::randint(0, WIDTH);
             data.y = Utils::randint(0, HEIGHT);
             CGraph<Place, double>::Node* oNode;
-            oNode = mGraph->insertNode(data);
-            oNode->data.id = i;
-            
-            
+            oNode = mGraph->insertNode(data,i);
             pointsToTriangule.push_back(make_pair(PointCGAL(data.x, data.y), oNode));
         }
         // delaunay triangulation
@@ -76,7 +79,28 @@ public:
     {
         kSegments=k;
         Segmentation oSegmentationManager;
-        oSegmentationManager.kmeans(mGraph,k,1);
+        oSegmentationManager.segmentGrapht(mGraph,k,1);
+    }
+    
+    void solver()
+    {
+        SolverPath s;
+        oPath=s.aStar(mGraph,mGraph->nodes[2],mGraph->nodes[10]);        
+    }
+    
+    void drawPath()
+    {
+        if(mGraph){
+            
+            for(int i=0; i<oPath.size()-1; i++)
+            {
+                double xv = oPath[i]->data.x;
+                double yv = oPath[i]->data.y;
+                double xu = oPath[i+1]->data.x;                
+                double yu = oPath[i+1]->data.y;
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0));
+            }
+        }
     }
     
     void drawGraph()
@@ -94,7 +118,20 @@ public:
             }
             
             
-            /*int nIdCluster=mGraph->nodes[q]->data.idCluster;
+            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,new Color(1.0,0.0,0.0,1.0));
+            
+            if(mGraph->nodes[q]->id==10)
+            {
+                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
+            }
+            
+            if(mGraph->nodes[q]->id==2)
+            {
+                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
+            }
+            
+            
+            /*int nIdCluster=mGraph->nodes[q]->idCluster;
             vector<Color*> tColor={
                 {new Color(1.0, 0.0, 0.0, 1.0)},
                 {new Color(0.0, 1.0, 0.0, 1.0)},
@@ -106,11 +143,8 @@ public:
                 {new Color(1.0, 0.43, 0.78, 1.0)},
                 {new Color(0.89, 0.47, 0.20, 1.0)},
                 {new Color(0.52, 0.39, 0.39, 1.0)}
-            };*/
-            
-            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,new Color(1.0,0.0,0.0,1.0));
-            
-            
+            };
+            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,tColor[nIdCluster]);*/
         }
     }
 };

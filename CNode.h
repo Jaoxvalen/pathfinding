@@ -16,13 +16,16 @@ namespace DS
 		typedef typename G::Edge Edge;
 		
         int id;
-        bool isSelected=false;
+        bool isVisit=false;
+        bool isAlone=false;
+        int idCluster;
 		N data;
 		vector<Edge*> edges;
 		vector<Edge*> edges_back;
 
-		CNode( N node_data )
+		CNode( N node_data, int _id )
 		{
+            id=_id;
 			data = node_data;
 		}
 	};

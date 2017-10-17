@@ -32,7 +32,7 @@ public:
         bool flag = false;
         
         Utils::getWord(in,line);
-        if( line == "P"){
+        if( line == "POINTS"){
             Utils::getWord(in,line);      
             int nNodes = stoi(line.c_str());
             
@@ -42,14 +42,14 @@ public:
                 x = stod(line.c_str());
                 Utils::getWord(in,line);
                 y = stod(line.c_str());
-                Place oPlace(x,y,i);
-                graph->insertNode(oPlace);
+                Place oPlace(x,y);
+                graph->insertNode(oPlace, i);
                 
             }
             
         }
         Utils::getWord(in,line);
-        if( line == "Edges"){
+        if( line == "EDGES"){
             Utils::getWord(in,line);      
             int nEdges = stoi(line.c_str());            
             for(int i=0;i< nEdges;i++){
@@ -58,7 +58,7 @@ public:
                 to = stoi(line.c_str());
                 Utils::getWord(in,line);
                 from = stoi(line.c_str());
-                graph->insertEdge(graph->nodes[from],graph->nodes[to],0.0,false);
+                graph->insertEdge(graph->nodes[from],graph->nodes[to],0.0,true);
             }        
         }
     }

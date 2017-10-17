@@ -25,7 +25,7 @@ namespace DS
 
 		vector<Node*> nodes;
 
-		Node* insertNode( N node_data );
+		Node* insertNode( N node_data, int id );
 		void insertEdge( Node* from, Node* to, E edge_data, bool dir );
 		void removeEdge( Edge* edge );
 		void removeNode( Node* node );
@@ -38,9 +38,10 @@ namespace DS
 	};
 
 	template<class N, class E>
-	CNode<CGraph<N,E> >* CGraph<N,E>::insertNode( N node_data)
+	CNode<CGraph<N,E> >* CGraph<N,E>::insertNode( N node_data, int id)
 	{
-        CNode<CGraph<N,E> >* oNode=new CNode<CGraph<N,E> >( node_data );
+        CNode<CGraph<N,E> >* oNode=new CNode<CGraph<N,E> >( node_data, id );
+        
 		nodes.push_back(oNode);
         return oNode;
 	}
@@ -66,7 +67,7 @@ namespace DS
 			to->edges.push_back( _edge_to );
 			from->edges_back.push_back( _edge_to );
 		}
-        edgesLog.push_back(make_pair (from->data.id,to->data.id));
+        edgesLog.push_back(make_pair (from->id,to->id));
         nEdges++;
 
 	}

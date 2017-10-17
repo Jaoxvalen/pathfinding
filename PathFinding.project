@@ -24,6 +24,8 @@
     </VirtualDirectory>
     <VirtualDirectory Name="Logic">
       <File Name="Segmentation.h"/>
+      <File Name="SolverPath.h"/>
+      <File Name="PreSolver.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">

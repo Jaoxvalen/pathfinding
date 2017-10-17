@@ -13,15 +13,16 @@ Context mContext;
 void onLoad()
 {
     Utils::initialize_randomness(-1);
-    //mContext.loadGraph("../gtest1.txt");
-    mContext.generatedGraph("../gtest.txt",100);
-    mContext.SegmentGraph(10);
-    
+    mContext.loadGraph("../100points.data");
+    //mContext.generatedGraph("../gtest.txt",100);
+    mContext.PreSolverGraph();
+    mContext.solver();
 }
 
 void onEnterFrame()
 {
     mContext.drawGraph();
+    mContext.drawPath();
 }
 
 void init()
