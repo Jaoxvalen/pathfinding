@@ -17,6 +17,8 @@ namespace DS
 		
         int id;
         bool isVisit=false;
+        //bool isClose=false;
+        //bool isOpen=false;
         bool isAlone=false;
         int idCluster;
 		N data;

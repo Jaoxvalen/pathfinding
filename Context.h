@@ -40,7 +40,7 @@ public:
     void PreSolverGraph()
     {
         PreSolver oPreSolver;
-        oPreSolver.calculatePathSegments(mGraph,10,"../solve1.txt");
+        oPreSolver.calculatePathSegments(mGraph,20,"../solutions/solve");
     }
     void loadGraph(string path)
     {
@@ -75,17 +75,11 @@ public:
         
     }
     
-    void SegmentGraph(int k)
-    {
-        kSegments=k;
-        Segmentation oSegmentationManager;
-        oSegmentationManager.segmentGrapht(mGraph,k,1);
-    }
-    
     void solver()
     {
         SolverPath s;
-        oPath=s.aStar(mGraph,mGraph->nodes[2],mGraph->nodes[10]);        
+        double distN;
+        oPath=s.aStarJaox(mGraph,mGraph->nodes[32],mGraph->nodes[161],distN);        
     }
     
     void drawPath()
@@ -120,12 +114,14 @@ public:
             
             mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,new Color(1.0,0.0,0.0,1.0));
             
+            
+            /*
             if(mGraph->nodes[q]->id==10)
             {
                 mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
             }
-            
-            if(mGraph->nodes[q]->id==2)
+            */
+           if(mGraph->nodes[q]->id==32 || mGraph->nodes[q]->id==161)
             {
                 mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
             }

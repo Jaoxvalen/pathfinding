@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include "Context.h"
 #include "InputFile.h"
+#include "GL/glui.h"
 
 using namespace std;
 
@@ -13,16 +14,16 @@ Context mContext;
 void onLoad()
 {
     Utils::initialize_randomness(-1);
-    mContext.loadGraph("../100points.data");
+    mContext.loadGraph("../10000points.data");
     //mContext.generatedGraph("../gtest.txt",100);
     mContext.PreSolverGraph();
-    mContext.solver();
+    //mContext.solver();
 }
 
 void onEnterFrame()
 {
     mContext.drawGraph();
-    mContext.drawPath();
+    //mContext.drawPath();
 }
 
 void init()

@@ -59,8 +59,9 @@ public:
             {
                 if(s!=lsIsolateds[i]->idCluster)
                 {
-                    vector<Node*> path=oSolver.aStar(oGraph,segments[s][0],lsIsolateds[i]);
-                    double distN=distancePath(path);
+                    double distN;
+                    vector<Node*> path=oSolver.aStarJaox(oGraph,segments[s][0],lsIsolateds[i],distN);
+                    //double distN=distancePath(path);
                     if(dist>distN || dist==-1)
                     {
                         dist=distN;
