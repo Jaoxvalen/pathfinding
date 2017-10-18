@@ -2,6 +2,8 @@
 #include <math.h>
 #include <time.h>
 #include <fstream>
+#include <limits>
+#include <string>
 
 using namespace std;
 class Utils
@@ -31,6 +33,14 @@ public:
         return seed1;
     }
 
+    fstream& gotoLine(std::fstream& file, unsigned int num){
+        file.seekg(std::ios::beg);
+        for(int i=0; i < num - 1; ++i){
+            file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+        }
+        return file;
+    }
+
     static void getWord(ifstream& fichero, string& line)
     {
         // jaox
@@ -47,6 +57,35 @@ public:
                     break;
                 }
             }
+        }
+    }
+    
+    static void getWordString(string & fichero, string& line)
+    {
+        // jaox
+        line = "";
+        char c = ' ';
+        bool scaning = false;
+        int pos=0;
+        while(pos<fichero.size()) {
+            c=fichero.at(pos);
+            if(c != ' ' && c != '\n' && c != '\r') {
+                scaning = true;
+                line += c;
+            } else {
+                if(scaning) {
+                    break;
+                }
+            }
+            pos++;
+        }
+        if(pos<fichero.size())
+        {
+            fichero=fichero.substr(pos,fichero.size()-pos);
+        }
+        else
+        {
+            fichero="";
         }
     }
 };

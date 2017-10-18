@@ -47,9 +47,11 @@ public:
         //buscamos los no conexos en su segmento
         for(int s=0; s<k;s++)
         {
+            cout<<"search conex segment"<<s<<endl;
             searchConexion(segments[s][0],s,segments[s]);
         }
         //aplicamos Astar a los aislados contra los otros centroides y asignamos al más cercano
+        cout<<"search conex segment end"<<endl;
         SolverPath oSolver;
         for(int i=0; i<lsIsolateds.size();i++)
         {
@@ -57,10 +59,12 @@ public:
             int kIndex=-1;
             for(int s=0; s<k;s++)
             {
+                cout<<"search centroide isolated "<<i<<" segment "<<s<<endl;
                 if(s!=lsIsolateds[i]->idCluster)
                 {
                     double distN;
-                    vector<Node*> path=oSolver.aStarJaox(oGraph,segments[s][0],lsIsolateds[i],distN);
+                    cout<<"Astar isolated "<<lsIsolateds[i]->id<<" "<<segments[s][0]->id<<endl;
+                    oSolver.aStarJaox(oGraph,segments[s][0],lsIsolateds[i],distN);
                     //double distN=distancePath(path);
                     if(dist>distN || dist==-1)
                     {
@@ -107,7 +111,7 @@ public:
         //los que tienen isVisit "false" son los que sobran y deben ser reasignados a otro segmento
         for(int i=0; i<lsSegments.size();i++)
         {
-            if(!lsSegments[i]->isVisit && lsSegments[i]->edges.size()>0)
+            if(lsSegments[i]->edges.size()>0 && !lsSegments[i]->isVisit)
             {
                 lsIsolateds.push_back(lsSegments[i]);
             }
@@ -154,8 +158,12 @@ public:
                         nIndexCluster=c;
                     }
                 }
-                lsClusterAsig[nIndexCluster].push_back(oGraph->nodes[n]);
-                oGraph->nodes[n]->idCluster=nIndexCluster;
+                if(oGraph->nodes[n]->edges.size()>0)
+                {
+                    lsClusterAsig[nIndexCluster].push_back(oGraph->nodes[n]);
+                    oGraph->nodes[n]->idCluster=nIndexCluster;
+                }
+                
             }
             //recalculamos los cluster con las medias de los nuevos grupos formados
             for(int c=0; c<k; c++)

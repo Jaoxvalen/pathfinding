@@ -19,9 +19,9 @@ class Context
 {
     Drawer mDrawer;
     CGraph<Place, double>* mGraph;
-    vector<CGraph<Place, double>::Node*> oPath;
+    vector<CGraph<Place, double>::Node*> oPath, oPathIni, oPathEnd;
     int kSegments;
-
+    PreSolver oPreSolver;
 public:
 
 
@@ -37,10 +37,32 @@ public:
         mGraph=new CGraph<Place, double>();
     }
         
+        
+    void loadPresolver()
+    {
+        
+        oPreSolver.loadPreCalculated("../solutions/solve_segment.txt");
+        mGraph=oPreSolver.mGraph;
+    }
+    
     void PreSolverGraph()
     {
-        PreSolver oPreSolver;
-        oPreSolver.calculatePathSegments(mGraph,20,"../solutions/solve");
+        oPreSolver.savePreCalculated(mGraph,-1,"../solutions/solve");
+    }
+    void findPath(int start, int end)
+    {
+        //2 960
+        SolverPath oSolver;
+        oPath=oPreSolver.findSegments(start,end, "../solutions/solve_path.txt");
+        double nDist;
+        
+        
+        int idCluster=mGraph->nodes[start]->idCluster;
+        oPathIni=oSolver.aStarJaox(mGraph,mGraph->nodes[start],mGraph->nodes[idCluster],nDist);
+        
+        idCluster=mGraph->nodes[end]->idCluster;
+        oPathEnd=oSolver.aStarJaox(mGraph,mGraph->nodes[idCluster],mGraph->nodes[end],nDist);
+        
     }
     void loadGraph(string path)
     {
@@ -86,13 +108,31 @@ public:
     {
         if(mGraph){
             
+            double xv,yv,xu,yu;
             for(int i=0; i<oPath.size()-1; i++)
             {
-                double xv = oPath[i]->data.x;
-                double yv = oPath[i]->data.y;
-                double xu = oPath[i+1]->data.x;                
-                double yu = oPath[i+1]->data.y;
-                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0));
+                xv = oPath[i]->data.x;
+                yv = oPath[i]->data.y;
+                xu = oPath[i+1]->data.x;                
+                yu = oPath[i+1]->data.y;
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 1.0, 0.0, 1.0),5);
+            }
+            
+            for(int i=0; i<oPathIni.size()-1; i++)
+            {
+                xv = oPathIni[i]->data.x;
+                yv = oPathIni[i]->data.y;
+                xu = oPathIni[i+1]->data.x;                
+                yu = oPathIni[i+1]->data.y;
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0),5);
+            }
+            for(int i=0; i<oPathEnd.size()-1; i++)
+            {
+                xv = oPathEnd[i]->data.x;
+                yv = oPathEnd[i]->data.y;
+                xu = oPathEnd[i+1]->data.x;                
+                yu = oPathEnd[i+1]->data.y;
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0),5);
             }
         }
     }
@@ -121,11 +161,16 @@ public:
                 mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
             }
             */
-           if(mGraph->nodes[q]->id==32 || mGraph->nodes[q]->id==161)
+            
+            if(mGraph->nodes[q]->id==2)
             {
-                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
+                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(0.0,1.0,1.0,1.0));
             }
             
+            if(mGraph->nodes[q]->id==960)
+            {
+                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(0.0,1.0,1.0,1.0));
+            }
             
             /*int nIdCluster=mGraph->nodes[q]->idCluster;
             vector<Color*> tColor={
@@ -140,7 +185,13 @@ public:
                 {new Color(0.89, 0.47, 0.20, 1.0)},
                 {new Color(0.52, 0.39, 0.39, 1.0)}
             };
-            mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,tColor[nIdCluster]);*/
+            
+            if(nIdCluster>=0 && nIdCluster<10)
+            {
+                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,tColor[nIdCluster]);
+            }
+            */
+            
         }
     }
 };

@@ -13,12 +13,12 @@ public:
     void saveGraph(string path,CGraph<Place,double>* graph)
     {
         ofstream outfile(path);
-        outfile << "P " <<graph->nodes.size()<<endl;
+        outfile << "POINTS " <<graph->nodes.size()<<endl;
         for(int i=0; i<graph->nodes.size(); i++)
         {
             outfile<<graph->nodes[i]->data.x<<" "<<graph->nodes[i]->data.y<<endl;
         }
-        outfile << "Edges " <<graph->nEdges<<endl;
+        outfile << "EDGES " <<graph->nEdges<<endl;
         for(int i=0; i<graph->edgesLog.size(); i++)
         {
             outfile<<graph->edgesLog[i].first<<" "<<graph->edgesLog[i].second<<endl;

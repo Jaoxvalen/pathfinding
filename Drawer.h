@@ -52,6 +52,16 @@ public:
         glEnd();
         delete color;
     }
+    void line(int x1, int y1, int x2, int y2, Color* color, int tam)
+    {
+        glColor4f(color->R, color->G, color->B, color->A);
+        glLineWidth(tam);
+        glBegin(GL_LINES);
+        glVertex2d(x1,y1);
+        glVertex2d(x2,y2);
+        glEnd();
+        delete color;
+    }
     void line(Point p1, Point p2, Color* color)
     {
         glColor4f(color->R, color->G, color->B, color->A);
