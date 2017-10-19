@@ -2,7 +2,7 @@
 <CodeLite_Project Name="PathFinding" Version="10.0.0" InternalType="Console">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00010001N0005Debug000000000000]]>
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
   <Description/>
@@ -21,11 +21,19 @@
       <File Name="Constants.h"/>
       <File Name="Drawer.h"/>
       <File Name="InputFile.h"/>
+      <File Name="Shaders.hpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Logic">
       <File Name="Segmentation.h"/>
       <File Name="SolverPath.h"/>
       <File Name="PreSolver.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="View">
+      <File Name="Menu.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ShaderResources">
+      <File Name="SimpleFragmentShader.fragmentshader"/>
+      <File Name="SimpleVertexShader.vertexshader"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
@@ -42,7 +50,7 @@
       <Compiler Options="-g;-O0;-std=c++11;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
       </Compiler>
-      <Linker Options="-lGL -lglut  -lX11 -ldl -lpthread -lCGAL  -lgmp" Required="yes"/>
+      <Linker Options="-lGLEW -lGL -lglut  -lX11 -ldl -lpthread -lCGAL  -lgmp" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
@@ -78,11 +86,11 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O2;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O2;-std=c++11;-Wall" C_Options="-O2;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <Preprocessor Value="NDEBUG"/>
       </Compiler>
-      <Linker Options="" Required="yes"/>
+      <Linker Options="-lGL -lglut  -lX11 -ldl -lpthread -lCGAL  -lgmp" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>

@@ -1,31 +1,38 @@
 #include <iostream>
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "Constants.h"
 #include "Utils.h"
 #include "Context.h"
 #include "InputFile.h"
-#include "GL/glui.h"
+#include "Menu.h"
 
 using namespace std;
 
-Context mContext;
+Context* mContext;
+Menu* mMenu;
 
 void onLoad()
 {
-    //mContext.loadGraph("../10000points.data");
+    mContext=new Context();
+    mMenu=new Menu(mContext);
+    mContext->mDrawer.loadGraph();
+    /*
+    mContext.loadGraph("../10000points.data");
     //mContext.generatedGraph("../gtest.txt",100);
     //mContext.PreSolverGraph();
     //mContext.solver();
     mContext.loadPresolver();
-    mContext.findPath(2,960);
-    
+    */
 }
 
 void onEnterFrame()
 {
-    mContext.drawGraph();
-    mContext.drawPath();
+    mMenu->main();
+    mContext->mDrawer.drawGraph();
+    //mContext.drawGraph();
+    //mContext.drawPath();
 }
 
 void init()
@@ -62,6 +69,12 @@ void timerCallback(int)
 
 int main(int argc, char** argv)
 {
+    
+    if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		return -1;
+	}
     
     glutInit(&argc,argv);
     // RGBA mode and a double buffered window

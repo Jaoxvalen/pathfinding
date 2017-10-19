@@ -5,7 +5,7 @@
 #include "Place.h"
 #include "Utils.h"
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <queue>
 
 using namespace std;
@@ -23,6 +23,7 @@ public:
     }
 
     
+    /*
     Node* searchMinimal(vector<Node*> &lsOpen,  map< Node*, double > &G,  map< Node*, double > &H, map< Node*, bool > isClose)
     {
         double dist=10e10;
@@ -38,7 +39,108 @@ public:
         }
         return ret;
     }
-    vector<Node*> aStarJaox( CGraph<Place, double> *mGraph,Node* start, Node* end, double &distPath)
+     */
+    
+    
+    vector<Node*> aStarJaox( CGraph<Place, double> *mGraph,Node* start, Node* end, double &distPath, bool &isPath){
+        
+        vector<Node*> lsPath;
+        unordered_map< Node*, double > distH,distW; 
+        unordered_map< Node*, Node* > parents;
+        unordered_map< Node*, bool > visit;
+        
+        isPath=true;
+        if(start->edges.size()==0 || end->edges.size()==0)
+        {
+            isPath=false;
+            return lsPath;
+        }
+        
+        if(start==end)
+        {
+            lsPath.push_back(start);
+            return lsPath;
+        }
+        
+        for(int i=0;i<mGraph->nodes.size();i++){
+            distH[ mGraph->nodes[i] ] = -1;
+            distW[ mGraph->nodes[i] ] = 1000000;
+            visit[ mGraph->nodes[i] ] = false;
+        }
+        
+        double xn = end->data.x;
+        double yn = end->data.y;
+        double xo = start->data.x;
+        double yo = start->data.y;
+             
+        
+        distW[start] = 0;
+        distH[start] = sqrt(pow(xo-xn,2)+pow(yo-yn,2));        
+        visit[start] = true;
+     
+        
+        int dist = distW[start] + distH[start];
+        
+        priority_queue< iPair, vector<iPair>, greater<iPair> > pq;
+    
+        pq.push( make_pair(dist, start) );
+                
+        Node* fin = start;
+        Node* ini = start;
+        
+        bool flag = true;
+        //do{                            
+        while( flag )
+        {
+            ini = pq.top().second;
+            pq.pop();            
+            visit[ini] = true;
+            
+            
+            auto oEdges = mGraph->nodes[ini->id]->edges;  
+            
+            for(int i=0;i<oEdges.size();i++){   
+                fin = oEdges[i]->nodes[1];
+                if( !visit[fin] ){                    
+                    double x=fin->data.x;
+                    double y=fin->data.y;
+                    if( distH[fin] == -1 ){
+                        distH[fin] = sqrt(pow(x-xn,2)+pow(y-yn,2));
+                    }
+                    if( distW[fin] > distW[ini] + oEdges[i]->data ){
+                        distW[fin] = distW[ini] + oEdges[i]->data;
+                        pq.push( make_pair(distH[fin]+ distW[fin] ,fin) );
+                        parents[fin]=ini;   
+                    }
+                    
+                    if( fin->id == end->id ){
+                        flag = false;
+                        //cout << "AAAAAA"<< endl;
+                    }                
+                }                           
+            }
+
+        }
+
+        
+        distPath= distW[end];
+        Node* n = end;
+        while(n != start){
+            lsPath.push_back(n);
+            n = parents[n];
+        }
+        lsPath.push_back(start);
+        
+
+        return lsPath;
+        
+        
+    
+        
+        
+    }
+    /*------------*/
+    /*vector<Node*> aStarJaox1( CGraph<Place, double> *mGraph,Node* start, Node* end, double &distPath, bool &isPath)
     {
         vector<Node*> lsOpen;
         map< Node*, Node* > parents;
@@ -46,6 +148,14 @@ public:
         map< Node*, bool > isOpen;
         map< Node*, bool > isClose;
         vector<Node*> lsPath;
+        
+        isPath=true;
+        if(start->edges.size()==0 || end->edges.size()==0)
+        {
+            isPath=false;
+            return lsPath;
+        }
+        
         
         for(int i=0; i<mGraph->nodes.size(); i++)
         {
@@ -99,10 +209,10 @@ public:
         distPath=G[end];
         
         return lsPath;
-    }
+    }*/
 
 
-    vector<Node*> aStar( CGraph<Place, double> *mGraph,Node* start, Node* end){
+    /*vector<Node*> aStar( CGraph<Place, double> *mGraph,Node* start, Node* end){
         
         map< Node*, double > distH,distW; 
         map< Node*, Node* > parents;
@@ -169,5 +279,5 @@ public:
         lsPath.push_back(start);
         return lsPath;
         
-    }
+    }*/
 };

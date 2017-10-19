@@ -88,4 +88,25 @@ public:
             fichero="";
         }
     }
+    
+    static void getFirstWordString(string & fichero, string& line)
+    {
+        // jaox
+        line = "";
+        char c = ' ';
+        bool scaning = false;
+        int pos=0;
+        while(pos<fichero.size()) {
+            c=fichero.at(pos);
+            if(c != ' ' && c != '\n' && c != '\r') {
+                scaning = true;
+                line += c;
+            } else {
+                if(scaning) {
+                    break;
+                }
+            }
+            pos++;
+        }
+    }
 };

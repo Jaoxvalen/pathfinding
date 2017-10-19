@@ -25,8 +25,9 @@ public:
         }
         outfile.close();
     }
-    void readInput(string path,CGraph<Place,double>* graph){
+    bool readInput(string path,CGraph<Place,double>* graph){
         ifstream in(path.c_str());
+        if(!in.is_open()) return false;
         string s,line;
         double n;
         bool flag = false;
@@ -61,5 +62,6 @@ public:
                 graph->insertEdge(graph->nodes[from],graph->nodes[to],0.0,true);
             }        
         }
+        return true;
     }
 };

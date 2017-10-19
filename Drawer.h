@@ -1,7 +1,10 @@
 #pragma once
 #include <math.h>
 #include <vector>
+#include <glm/glm.hpp>
+#include "Shaders.hpp"
 
+using namespace glm;
 using namespace std;
 
 namespace visual
@@ -38,10 +41,63 @@ public:
     //Color* BLUE = new Color(0.0, 0.0, 1.0, 1.0);
     
     
+    GLuint vertexbuffer;
+    GLuint VertexArrayID;
+    GLuint programID;
+    
     Drawer()
     {
         
     }
+    
+    void loadGraph()
+    {
+        glGenVertexArrays(1, &VertexArrayID);
+        glBindVertexArray(VertexArrayID);
+
+        // Create and compile our GLSL program from the shaders
+        programID = LoadShaders( "../SimpleVertexShader.vertexshader", "../SimpleFragmentShader.fragmentshader" );
+
+        GLfloat g_vertex_buffer_data[] = { 
+            -1.0f, -1.0f, 0.0f,
+             1.0f, -1.0f, 0.0f,
+             0.0f,  1.0f, 0.0f,
+        };
+
+        glGenBuffers(1, &vertexbuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    }
+    void drawGraph()
+    {
+       glUseProgram(programID);
+
+		// 1rst attribute buffer : vertices
+		
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+        glEnableVertexAttribArray(0);
+		// Draw the triangle !
+		glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
+
+		glDisableVertexAttribArray(0);
+
+    }
+    
+    void cleanUP()
+    {
+        glDeleteBuffers(1, &vertexbuffer);
+        glDeleteVertexArrays(1, &VertexArrayID);
+    }
+    
+    
     void line(int x1, int y1, int x2, int y2, Color* color)
     {
         glColor4f(color->R, color->G, color->B, color->A);
@@ -149,7 +205,7 @@ public:
     {
         glColor4f(color->R, color->G, color->B, color->A);
         int i;
-        int triangleAmount = 20; //# of triangles used to draw circle
+        int triangleAmount = 4; //# of triangles used to draw circle
         // GLfloat radius = 0.8f; //radius
         GLfloat twicePi = 2.0f * PI;
         glBegin(GL_TRIANGLE_FAN);

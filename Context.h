@@ -17,13 +17,15 @@ using namespace std;
 
 class Context
 {
-    Drawer mDrawer;
+    
     CGraph<Place, double>* mGraph;
     vector<CGraph<Place, double>::Node*> oPath, oPathIni, oPathEnd;
     int kSegments;
     PreSolver oPreSolver;
+    int start, end;
+    bool isPath=false;
 public:
-
+    Drawer mDrawer;
 
     typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
     typedef CGAL::Triangulation_vertex_base_with_info_2< CGraph<Place,double>::Node*, K> Vb;
@@ -38,36 +40,55 @@ public:
     }
         
         
-    void loadPresolver()
+    bool loadPresolver(string name)
     {
         
-        oPreSolver.loadPreCalculated("../solutions/solve_segment.txt");
-        mGraph=oPreSolver.mGraph;
+        if(oPreSolver.loadPreCalculated("../solutions/"+name))
+        {
+             mGraph=oPreSolver.mGraph;
+             return true;
+        }
+        else
+        {
+            return false;
+        }
+       
     }
     
-    void PreSolverGraph()
+    void preSolverGraph(string name)
     {
-        oPreSolver.savePreCalculated(mGraph,-1,"../solutions/solve");
+        //oPreSolver.savePreCalculated(mGraph,-1,"../solutions/solve");
+        oPreSolver.savePreCalculated(mGraph,50,"../solutions/"+name);
     }
-    void findPath(int start, int end)
+    void findPath(int _start, int _end, string dir)
     {
-        //2 960
+        isPath=false;
+        oPath.clear();
+        oPathIni.clear();
+        oPathEnd.clear();
+        
+        start=_start;
+        end=_end;
         SolverPath oSolver;
-        oPath=oPreSolver.findSegments(start,end, "../solutions/solve_path.txt");
+        bool isPathT;
+        oPath=oPreSolver.findSegments(start,end, "../solutions/"+dir+"_path.txt",isPath);
         double nDist;
+        int idC;
+        idC=oPreSolver.idCentroids[mGraph->nodes[start]->idCluster];
         
-        
-        int idCluster=mGraph->nodes[start]->idCluster;
-        oPathIni=oSolver.aStarJaox(mGraph,mGraph->nodes[start],mGraph->nodes[idCluster],nDist);
-        
-        idCluster=mGraph->nodes[end]->idCluster;
-        oPathEnd=oSolver.aStarJaox(mGraph,mGraph->nodes[idCluster],mGraph->nodes[end],nDist);
+        oPathIni=oSolver.aStarJaox(mGraph,mGraph->nodes[start], mGraph->nodes[idC], nDist,isPathT);
+        idC=oPreSolver.idCentroids[mGraph->nodes[end]->idCluster];
+        oPathEnd=oSolver.aStarJaox(mGraph,mGraph->nodes[idC],mGraph->nodes[end],nDist, isPathT);
+        if(!isPath)
+        {
+            cout<<"No existe ruta posible"<<endl;
+        }
         
     }
-    void loadGraph(string path)
+    bool loadGraph(string path)
     {
         InputFile ifManager;
-        ifManager.readInput(path, mGraph);
+        return ifManager.readInput(path, mGraph);
     }
     void generatedGraph(string path, int numberOfNodes)
     {
@@ -97,17 +118,9 @@ public:
         
     }
     
-    void solver()
-    {
-        SolverPath s;
-        double distN;
-        oPath=s.aStarJaox(mGraph,mGraph->nodes[32],mGraph->nodes[161],distN);        
-    }
-    
     void drawPath()
     {
-        if(mGraph){
-            
+        if(isPath){
             double xv,yv,xu,yu;
             for(int i=0; i<oPath.size()-1; i++)
             {
@@ -124,7 +137,7 @@ public:
                 yv = oPathIni[i]->data.y;
                 xu = oPathIni[i+1]->data.x;                
                 yu = oPathIni[i+1]->data.y;
-                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0),5);
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 1.0, 0.0, 1.0),5);
             }
             for(int i=0; i<oPathEnd.size()-1; i++)
             {
@@ -132,8 +145,11 @@ public:
                 yv = oPathEnd[i]->data.y;
                 xu = oPathEnd[i+1]->data.x;                
                 yu = oPathEnd[i+1]->data.y;
-                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 0.0, 0.0, 1.0),5);
+                mDrawer.line(xu, yu, xv, yv, new Color(1.0, 1.0, 0.0, 1.0),5);
             }
+            
+            mDrawer.circFill(mGraph->nodes[start]->data.x,mGraph->nodes[start]->data.y,5,new Color(0.0,1.0,1.0,1.0));
+            mDrawer.circFill(mGraph->nodes[end]->data.x,mGraph->nodes[end]->data.y,5,new Color(0.0,1.0,1.0,1.0));
         }
     }
     
@@ -150,48 +166,7 @@ public:
                 double y2=oEdges[p]->nodes[1]->data.y;
                 mDrawer.line(x1, y1, x2, y2, new Color(1.0, 1.0, 1.0, 1.0));
             }
-            
-            
             mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,2,new Color(1.0,0.0,0.0,1.0));
-            
-            
-            /*
-            if(mGraph->nodes[q]->id==10)
-            {
-                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(1.0,1.0,0.0,1.0));
-            }
-            */
-            
-            if(mGraph->nodes[q]->id==2)
-            {
-                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(0.0,1.0,1.0,1.0));
-            }
-            
-            if(mGraph->nodes[q]->id==960)
-            {
-                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,new Color(0.0,1.0,1.0,1.0));
-            }
-            
-            /*int nIdCluster=mGraph->nodes[q]->idCluster;
-            vector<Color*> tColor={
-                {new Color(1.0, 0.0, 0.0, 1.0)},
-                {new Color(0.0, 1.0, 0.0, 1.0)},
-                {new Color(0.0, 0.0, 1.0, 1.0)},
-                {new Color(1.0, 1.0, 0.0, 1.0)},
-                {new Color(0.0, 1.0, 1.0, 1.0)},
-                {new Color(1.0, 0.0, 1.0, 1.0)},
-                {new Color(0.53, 0.12, 0.47, 1.0)},
-                {new Color(1.0, 0.43, 0.78, 1.0)},
-                {new Color(0.89, 0.47, 0.20, 1.0)},
-                {new Color(0.52, 0.39, 0.39, 1.0)}
-            };
-            
-            if(nIdCluster>=0 && nIdCluster<10)
-            {
-                mDrawer.circFill(mGraph->nodes[q]->data.x,mGraph->nodes[q]->data.y,5,tColor[nIdCluster]);
-            }
-            */
-            
         }
     }
 };

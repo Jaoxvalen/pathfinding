@@ -5,6 +5,7 @@
 #include "SolverPath.h"
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 using namespace DS;
@@ -63,8 +64,9 @@ public:
                 if(s!=lsIsolateds[i]->idCluster)
                 {
                     double distN;
+                    bool isPath;
                     cout<<"Astar isolated "<<lsIsolateds[i]->id<<" "<<segments[s][0]->id<<endl;
-                    oSolver.aStarJaox(oGraph,segments[s][0],lsIsolateds[i],distN);
+                    oSolver.aStarJaox(oGraph,segments[s][0],lsIsolateds[i],distN,isPath);
                     //double distN=distancePath(path);
                     if(dist>distN || dist==-1)
                     {
@@ -120,6 +122,7 @@ public:
     
     vector<vector<Node* > > kmeans(CGraph<Place,double>* oGraph, int k, double nDelta)
     {
+        cout<<"aplicando kMeans"<<endl;
         //seleccionar k nodos aleatorios
         vector<Node*> oClusters;
         int nRandom=Utils::randint(0,oGraph->nodes.size()-1);
@@ -133,10 +136,12 @@ public:
             nRandom=Utils::randint(0,oGraph->nodes.size()-1);
             oselectedNode=oGraph->nodes[nRandom];
         }
+        cout<<"Se eligieron los nodos aleatorios como centroides base"<<endl;
         int nNodes=oGraph->nodes.size();
         //asignamos el nodo al cluster mas cercano en distancia
         vector<vector<Node* > >lsClusterAsig(k);
         int nConvergeNum=k;
+        int iter=0;
         while(nConvergeNum>0)
         {
             nConvergeNum=k;
@@ -175,10 +180,12 @@ public:
                     oPlaceMedia.x+=lsClusterAsig[c][ca]->data.x;
                     oPlaceMedia.y+=lsClusterAsig[c][ca]->data.y;
                 }
-                oPlaceMedia.x=oPlaceMedia.x/lsClusterAsig[c].size();
-                oPlaceMedia.y=oPlaceMedia.y/lsClusterAsig[c].size();
+                oPlaceMedia.x=oPlaceMedia.x/std::max(int (lsClusterAsig[c].size()),1);
+                oPlaceMedia.y=oPlaceMedia.y/std::max(int (lsClusterAsig[c].size()),1);
                 Node* oClusterNew=new Node(oPlaceMedia,-1);
                 //calculamos la convergencia para detener el algoritmo
+               
+                //cout<<distance(oClusterNew,oClusters[c])<<" "<<c<<endl;
                 if(distance(oClusterNew,oClusters[c])<nDelta)
                 {
                     nConvergeNum--;
@@ -186,6 +193,9 @@ public:
                 //asignamos el nuevo cluster media
                 oClusters[c]=oClusterNew;
             }
+            iter++;
+            cout<<"kMeans iteracion "<< iter<<endl;
+            cout<<"kMeans nConvergeNum "<< nConvergeNum<<endl;
         }
         return lsClusterAsig;
     }
