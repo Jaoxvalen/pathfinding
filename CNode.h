@@ -15,14 +15,19 @@ namespace DS
 		typedef typename G::NodeData N;
 		typedef typename G::Edge Edge;
 		
-        long long id;
-        bool isSelected=false;
+        int id;
+        bool isVisit=false;
+        //bool isClose=false;
+        //bool isOpen=false;
+        bool isAlone=false;
+        int idCluster;
 		N data;
 		vector<Edge*> edges;
 		vector<Edge*> edges_back;
 
-		CNode( N node_data )
+		CNode( N node_data, int _id )
 		{
+            id=_id;
 			data = node_data;
 		}
 	};

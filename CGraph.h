@@ -5,6 +5,7 @@
 #include <list>
 #include "CNode.h"
 #include "CEdge.h"
+#include <utility>
 
 using namespace std;
 
@@ -24,19 +25,32 @@ namespace DS
 
 		vector<Node*> nodes;
 
-		Node* insertNode( N node_data );
+		Node* insertNode( N node_data, int id );
+        Node* insertNode( N node_data, int id, int idCluster );
 		void insertEdge( Node* from, Node* to, E edge_data, bool dir );
 		void removeEdge( Edge* edge );
 		void removeNode( Node* node );
-
+        
+        //info extra 
+        int nEdges=0;
+        vector<pair <int,int> > edgesLog;
 
 		void print();
 	};
 
 	template<class N, class E>
-	CNode<CGraph<N,E> >* CGraph<N,E>::insertNode( N node_data)
+	CNode<CGraph<N,E> >* CGraph<N,E>::insertNode( N node_data, int id)
 	{
-        CNode<CGraph<N,E> >* oNode=new CNode<CGraph<N,E> >( node_data );
+        CNode<CGraph<N,E> >* oNode=new CNode<CGraph<N,E> >( node_data, id );
+		nodes.push_back(oNode);
+        return oNode;
+	}
+    
+    template<class N, class E>
+	CNode<CGraph<N,E> >* CGraph<N,E>::insertNode( N node_data, int id, int idCluster)
+	{
+        CNode<CGraph<N,E> >* oNode=new CNode<CGraph<N,E> >( node_data, id );
+        oNode->idCluster=idCluster;
 		nodes.push_back(oNode);
         return oNode;
 	}
@@ -62,6 +76,8 @@ namespace DS
 			to->edges.push_back( _edge_to );
 			from->edges_back.push_back( _edge_to );
 		}
+        edgesLog.push_back(make_pair (from->id,to->id));
+        nEdges++;
 
 	}
 

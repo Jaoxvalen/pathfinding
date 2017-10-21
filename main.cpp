@@ -1,28 +1,47 @@
 #include <iostream>
+//#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "Constants.h"
 #include "Utils.h"
 #include "Context.h"
 #include "InputFile.h"
+#include "Menu.h"
 
 using namespace std;
 
-Context mContext;
+Context* mContext;
+Menu* mMenu;
 
 void onLoad()
 {
-    InputFile::readInput("",)
+
+    //InputFile::readInput("",)
+
+    mContext=new Context();
+    mMenu=new Menu(mContext);
+    //mContext->mDrawer.loadGraph();
+    /*
+    mContext.loadGraph("../10000points.data");
+    //mContext.generatedGraph("../gtest.txt",100);
+    //mContext.PreSolverGraph();
+    //mContext.solver();
+    mContext.loadPresolver();
+    */
+    
+    //#commit >>>>>>> f5378a324c719ef81b14676849836671b944c589
 }
 
 void onEnterFrame()
 {
-    mContext.draw();
+    mMenu->main();
+    //mContext->mDrawer.drawGraph();
+    //mContext.drawGraph();
+    //mContext.drawPath();
 }
 
 void init()
 {
-    Utils::initialize_randomness(-1);
     glClearColor(0.0,0.0,0.0,0.0);
     onLoad();
 }
@@ -56,10 +75,17 @@ void timerCallback(int)
 int main(int argc, char** argv)
 {
     
+    /*if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		return -1;
+	}*/
+    
     glutInit(&argc,argv);
     // RGBA mode and a double buffered window
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
     glutInitWindowSize(WIDTH,HEIGHT);
+    //glEnable(GL_BLEND);
     glutCreateWindow("Test");
     // Registration of the display callback function 
     glutDisplayFunc(displayCallback);
