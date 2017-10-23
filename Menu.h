@@ -75,7 +75,7 @@ public:
     
     void showMain()
     {
-        string o="";
+        string o="2";
         while(o!="1" && o!="2" && o!="3")
         {
             //system("clear");
@@ -84,7 +84,7 @@ public:
             cout<<"2.Cargar Precalculo"<<endl;
             cout<<"3.Salir"<<endl;
             cout<<"Opcion: "; 
-            cin>>o;
+            //cin>>o;
         }
         if(o=="1") 
         {
@@ -115,7 +115,8 @@ public:
     }
     void showLoadedGraphOptions()
     {
-        string o="";
+        string o="1";
+        
         while(o!="1" && o!="2" && o!="3" && o!="4")
         {
             //system("clear");
@@ -124,11 +125,12 @@ public:
             cout<<"2.Guardar precalculo"<<endl;
             cout<<"3.volver"<<endl;
             cout<<"Opcion: "; 
-            cin>>o;
+            //cin>>o;
         }
         if(o=="1") 
         {
-            isPainted=true;
+            cout << "CARAJOOOOOOOOOOOOOOOO"<<endl; 
+            isPainted=true;           
             mContext->drawGraph();
         }
         else if(o=="2")
@@ -156,7 +158,8 @@ public:
         for(unsigned int i=0; i<glob_result.gl_pathc; ++i){
           cout << glob_result.gl_pathv[i] << endl;
         }
-        string name=getDir("Elija el nombre: ");
+
+        string name="joao";//getDir("Elija el nombre: ");
         if(mContext->loadPresolver(name))
         {
             namePreSolver=name;
@@ -171,7 +174,7 @@ public:
     }
     void showLoadedPrecalcOptions()
     {
-        string o="";
+        string o="4";
         while(o!="1" && o!="2" && o!="3" && o!="4")
         {
             //system("clear");

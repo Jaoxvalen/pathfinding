@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 using namespace DS;
@@ -16,8 +17,16 @@ public:
     typedef CGraph<Place,double>::Node Node;
     vector<Node*> lsIsolateds;
     
+    double getAngle(Place a,Place b){
+        if( a.x == b.x && a.y == b.y)
+            return 1000000.0;
+        return atan( ( b.y - a.y )/ (b.x - a.x) );
+    }
+
     double getAngle(Node* a,Node* b){
-        return atan( ( a->data.y - b->data.y )/ (a->data.x - b->data.x) );
+        if( a == b)
+            return 1000000.0;
+        return atan( ( b->data.y - a->data.y )/ (b->data.x - a->data.x) );
     }
     
     vector<Node*> getCentroids( vector<Node*> segment)
@@ -31,26 +40,29 @@ public:
             }
         }
         
-        double minAngle = 180;
-        vector<Node*> boundary ;
+        double minAngle = 2*PI;
+        vector<Node*> boundary;
+        //vector<bool> visited(n,false);
         Node* ref = minorX;
         Node* next;
         
         boundary.push_back(ref);
         
+        //visited[ ref->id ] = true;
+                
         bool flag = true;
         while( flag ){
-            for(int j=0;j<n;j++){
-                if( getAngle(ref,segment[j]) < minAngle ){                
-                    minAngle = getAngle(minorX,segment[j]);
-                    next = segment[j];                
+            for(int i=0;i<n;i++){
+                if( getAngle(ref,segment[i]) < minAngle ){                                                        
+                    minAngle = getAngle(minorX,segment[i]);
+                    next = segment[i];                
                 }            
             }
             ref = next;
-            boundary.push_back(ref);            
-            if( ref == minorX ){
-                flag = false;
-            }            
+            if( ref == minorX )flag = false;
+            else boundary.push_back(ref);                               
+            //cout << "hola" << endl;    
+            //cout << getAngle(Place(0,1),Place(1,0));
         }
         return boundary;
     }
@@ -67,6 +79,7 @@ public:
         }
         return false;
     }
+    
     double distancePath(vector<Node*> oPath)
     {
         if(oPath.size()==0) return -1;
@@ -77,6 +90,7 @@ public:
         }
         return nResult;
     }
+    
     double distance(Node* oNode1, Node* oNode2)
     {
          return sqrt(pow((oNode1->data.x - oNode2->data.x), 2) + pow((oNode1->data.y - oNode2->data.y), 2));

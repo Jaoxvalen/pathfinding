@@ -35,10 +35,10 @@ public:
         string sCentroids= file;
         //string sContours  = file;
         
-        ifstream in(sSegments.append("_segment.txt").c_str());
+        ifstream in( sSegments.append("_segment.txt").c_str() );
         if(!in.is_open()) return false;
         
-        ifstream inCentroids(sCentroids.append("_centroids.txt").c_str());
+        ifstream inCentroids( sCentroids.append("_centroids.txt").c_str() );
         if(!inCentroids.is_open()) return false;
         
         /*ifstream inContours( sContours.append("_contours.txt").c_str() );
@@ -57,6 +57,8 @@ public:
             n=stoi(line.c_str());
             idCentroids.push_back(n);
         }
+
+        inCentroids.close();
         
         //cargamos el grafo
         Utils::getWord(in,line);
@@ -93,7 +95,7 @@ public:
         }
         //cargamos los idCentroides
         
-        
+        in.close();
         isLoad=true;
     }
     

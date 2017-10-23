@@ -17,7 +17,6 @@ using namespace std;
 
 class Context
 {
-    
     CGraph<Place, double>* mGraph;
     vector<CGraph<Place, double>::Node*> oPath, oPathIni, oPathEnd;
     int kSegments;
@@ -58,7 +57,7 @@ public:
     void preSolverGraph(string name)
     {
         //oPreSolver.savePreCalculated(mGraph,-1,"../solutions/solve");
-        oPreSolver.savePreCalculated(mGraph,50,"../solutions/"+name);
+        oPreSolver.savePreCalculated(mGraph,10,"../solutions/"+name);
     }
     void findPath(int _start, int _end, string dir)
     {
@@ -172,7 +171,7 @@ public:
     
     int calcularContorno(int idCluster)
     {
-        vector<CGraph<Place, double>::Node* >  lsNodes;
+        vector< CGraph<Place, double>::Node* >  lsNodes;
         for(int i=0; i<mGraph->nodes.size();i++)
         {
             if(mGraph->nodes[i]->idCluster==idCluster)
